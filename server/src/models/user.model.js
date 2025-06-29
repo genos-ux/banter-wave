@@ -9,7 +9,7 @@ const userSchema = Schema({
     lowercase: true,
     match: [/\S+@\S+\.\S+/, "Please fill a valid email address."],
   },
-  fullName: {
+  userName: {
     type: String,
     required: [true, "User Name is required"],
     trim: true,

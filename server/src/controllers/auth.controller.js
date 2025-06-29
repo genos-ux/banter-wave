@@ -1,5 +1,11 @@
+import { registerUserValidator } from "../validators/user.validator.js"
+
 export const signup = (req, res) => {
-    res.send("sign up route.")
+    try {
+        const {error, value} = registerUserValidator.validate(req.body);
+    } catch (error) {
+        
+    }
 }
 export const login = (req, res) => {
     res.send("login route")
