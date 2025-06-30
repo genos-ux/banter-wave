@@ -21,16 +21,17 @@ export const errorMiddleware = (err, req, res, next) => {
       error.statusCode = 400;
     }
 
-    // Mongoose validation error.
     if (err.name === "ValidationError") {
-      const message = Object.values(err.errors).map((val) => val.message);
-      error = new Error(message.join(", "));
-      error.statusCode = 400;
+      const errors = Object.values(err.errors).map((val) => val.message);
+      return res.status(400).json({
+        success: false,
+        errors, // sends array of detailed messages
+      });
     }
 
     res
       .status(error.statusCode || 500)
-      .json({ success: false, error: error.message || "Server Error." });
+      .json({ success: false, error: error.message || "Internal Server Error." });
   } catch (error) {
     next(error);
   }
