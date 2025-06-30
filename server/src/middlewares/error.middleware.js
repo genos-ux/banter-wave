@@ -29,9 +29,19 @@ export const errorMiddleware = (err, req, res, next) => {
       });
     }
 
+    if (err.name === "UnauthorizedError") {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token.",
+      });
+    }
+
     res
       .status(error.statusCode || 500)
-      .json({ success: false, error: error.message || "Internal Server Error." });
+      .json({
+        success: false,
+        error: error.message || "Internal Server Error.",
+      });
   } catch (error) {
     next(error);
   }

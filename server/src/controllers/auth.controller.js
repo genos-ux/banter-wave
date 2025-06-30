@@ -6,6 +6,7 @@ import {
   registerUserValidator,
 } from "../validators/user.validator.js";
 import bcrypt from "bcryptjs";
+import cloudinary from "../config/cloudinary.js";
 
 export const signup = async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -92,3 +93,30 @@ export const logout = (req, res, next) => {
     next(error);
   }
 };
+
+export const updateProfile = async(req, res, next) => {
+    try {
+        const {profilePic} = req.body;
+        const userId = req.user._id;
+
+        if(!profilePic) return res.status(400).json({ message: "Profile pic is required." });
+
+        const uploadResponse = await cloudinary.uploader.upload(profilePic);
+        const updatedUser = await User.findByIdAndUpdate(userId, { profilePic: uploadResponse.secure_url}, { new: true });
+
+        res.status(200).json(updatedUser);
+        
+    } catch (error) {
+        console.log(`Error in update profile: ${error}`)
+        next(error);
+    }
+}
+
+export const checkAuth = (req,res,next) => {
+    try {
+        res.status(200).json(req.user);
+    } catch (error) {
+        console.log(`Error in checkAuth controller: ${error.message}`);
+        next(error);
+    }
+}
