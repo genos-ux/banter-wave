@@ -1,21 +1,46 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Eye, EyeOff, Lock, Mail, MessageSquare, User } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Loader,
+  Loader2,
+  Lock,
+  Mail,
+  MessageSquare,
+  User,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import AuthImagePattern from "../components/AuthImagePattern";
+import toast from "react-hot-toast";
 
 function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
+    userName: "",
     email: "",
     password: "",
   });
 
   const { signup, isSigningUp } = useAuthStore();
 
-  const validateForm = () => {};
+  const validateForm = () => {
+    if (!formData.userName.trim()) return toast.error("Username is required.");
+    if (!formData.email.trim()) return toast.error("Email is required.");
+    if (!/\S+@\S+\.\S+/.test(formData.email))
+      return toast.error("Invalid email format");
+    if(!formData.password) return toast.error("Password is required.");
+    if(formData.password.length < 6) return toast.error("Password must be at least 6 characters.");
+
+    return true;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const success = validateForm();
+
+    if(success) signup(formData);
   };
 
   return (
@@ -39,7 +64,7 @@ function SignUpPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="form-control">
               <label className="label">
-                <span className="labe-text font-medium">Username</span>
+                <span className="label-text font-medium">Username</span>
               </label>
 
               <div className="relative">
@@ -51,9 +76,9 @@ function SignUpPage() {
                   type="text"
                   className={`input input-bordered w-full pl-10 focus:outline-none focus:ring-0`}
                   placeholder="John Doe"
-                  value={formData.fullName}
+                  value={formData.userName}
                   onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
+                    setFormData({ ...formData, userName: e.target.value })
                   }
                 />
               </div>
@@ -114,9 +139,39 @@ function SignUpPage() {
                 </button>
               </div>
             </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={isSigningUp}
+            >
+              {isSigningUp ? (
+                <>
+                  <Loader2 className="size-5 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Create Account"
+              )}
+            </button>
           </form>
+
+          <div className="text-center">
+            <p className="text-base-content/60">
+              Already have an account?{" "}
+              <Link to="/login" className="link link-primary">
+                Sign in
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
+
+      {/* Right Side */}
+      <AuthImagePattern
+        title="Join our community"
+        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
+      />
     </div>
   );
 }
