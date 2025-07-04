@@ -58,6 +58,10 @@ export const useAuthStore = create((set) => ({
         } finally {
             set({ isLogginIn: false })
         }
+    },
+
+    update: async(data) => {
+        
     }
 
 }))
