@@ -7,6 +7,6 @@ const routes = Router();
 
 routes.use("/auth",authRoutes);
 
-routes.use("/message",messageRoutes);
+routes.use("/messages",messageRoutes);
 
 export default routes;
