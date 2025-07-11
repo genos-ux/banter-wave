@@ -1,0 +1,21 @@
+{
+  "name": "banter-wave",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix server && npm install --prefix app && npm run build --prefix app",
+    "start": "npm run start --prefix server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genos-ux/banter-wave.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/genos-ux/banter-wave/issues"
+  },
+  "homepage": "https://github.com/genos-ux/banter-wave#readme"
+}
