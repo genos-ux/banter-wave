@@ -38,7 +38,7 @@ function Navbar() {
                                 <span className="hidden sm:inline">Profile</span>
                             </Link>
 
-                            <button className="flex gap-2 items-center" onClick={handleLogout}>
+                            <button className="flex cursor-pointer gap-2 items-center" onClick={handleLogout}>
                                 <LogOut className='size-5' />
                                 <span className="hidden sm:inline">Logout</span>
                             </button>
